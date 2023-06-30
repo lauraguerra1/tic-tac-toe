@@ -1,17 +1,24 @@
-import React from 'react';
+
 import logo from './logo.svg';
 import './App.css';
 import Header from './Header'
 import Box from './Box'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Confetti from 'react-confetti'
+import { WinLog } from './index';
 
 
 function App() {
   const [boxes, setBoxes] = useState<Box[]>(getNewBoxes())
-  const [winFound, setWinFound] = useState<boolean>(true)
   const [currentPlayer, setCurrentPlayer] = useState<string>('teddy')
- 
+  const [winnerLog, setWinnerLog] = useState<WinLog>({teddy: 0, bunny: 0, currentWinner: ''})
+  
+  // type WinLog = {
+  //   teddy: number, 
+  //   bunny: number, 
+  //   currentWinner: string
+  // }
+
   type Win = [number, number, number]
 
   const winningConditions: Win[]= [
@@ -52,11 +59,29 @@ function App() {
     }
   }
 
-  const takeTurn = (id: number) => {
-    fillBox(id)
-    setCurrentPlayer(prevPlayer => {
-      return prevPlayer === 'teddy' ? 'bunny' : 'teddy'
+  const checkForWins = () => {
+    winningConditions.forEach(condition => {
+      if(condition.every(position => boxes[position].filledWith && boxes[condition[0]].filledWith === boxes[position].filledWith)) {
+        setWinnerLog(prevLog => {
+          let newLog = {...prevLog}
+          boxes[condition[0]].filledWith === 'teddy' ? newLog.teddy ++ : newLog.bunny ++
+          newLog.currentWinner = boxes[condition[0]].filledWith
+          return newLog
+        })
+        return
+      }
     })
+  }
+
+  useEffect(checkForWins, [boxes])
+
+  const takeTurn = (id: number) => {
+    if(!winnerLog.currentWinner) {
+      fillBox(id)
+      setCurrentPlayer(prevPlayer => {
+        return prevPlayer === 'teddy' ? 'bunny' : 'teddy'
+      })
+    }
   }
   
   const boxElements = boxes.map(box => {
@@ -70,19 +95,22 @@ function App() {
     )
   })
   
+
+
+
   const resetGame = () => {
     setBoxes(getNewBoxes())
-    setWinFound(false)
+    setWinnerLog(prevLog => ({...prevLog, currentWinner: ''}))
   }
 
   return (
     <main>
-      {winFound && <Confetti />}
-      <Header/>
+      {winnerLog.currentWinner && <Confetti />}
+      <Header winnerLog={winnerLog}/>
       <div className='game-board'>
         {boxElements}
       </div>
-      {winFound ? <button className='reset' onClick={resetGame}>Play Again</button> : <div className='reset-placeholder'></div>}
+      {winnerLog.currentWinner ? <button className='reset' onClick={resetGame}>Play Again</button> : <div className='reset-placeholder'></div>}
     </main>
   );
 }

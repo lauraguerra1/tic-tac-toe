@@ -4,6 +4,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+export type WinLog = {
+  teddy: number, 
+  bunny: number, 
+  currentWinner: string
+}
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
