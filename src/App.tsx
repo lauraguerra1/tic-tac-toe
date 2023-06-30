@@ -80,6 +80,7 @@ function App() {
       <div className='game-board'>
         {boxElements}
       </div>
+      {winFound ? <button className='reset'>Play Again</button> : <div className='reset-placeholder'></div>}
     </main>
   );
 }
