@@ -4,12 +4,12 @@ import './App.css';
 import Header from './Header'
 import Box from './Box'
 import { useState } from 'react';
-
+import Confetti from 'react-confetti'
 
 
 function App() {
   const [boxes, setBoxes] = useState<Box[]>(getNewBoxes())
-  const [winFound, setWinFound] = useState<boolean>(false)
+  const [winFound, setWinFound] = useState<boolean>(true)
   const [currentPlayer, setCurrentPlayer] = useState<string>('teddy')
  
   type Win = [number, number, number]
@@ -72,15 +72,17 @@ function App() {
   
   const resetGame = () => {
     setBoxes(getNewBoxes())
+    setWinFound(false)
   }
 
   return (
     <main>
+      {winFound && <Confetti />}
       <Header/>
       <div className='game-board'>
         {boxElements}
       </div>
-      {winFound ? <button className='reset'>Play Again</button> : <div className='reset-placeholder'></div>}
+      {winFound ? <button className='reset' onClick={resetGame}>Play Again</button> : <div className='reset-placeholder'></div>}
     </main>
   );
 }
