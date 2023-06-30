@@ -20,6 +20,10 @@ main {
   min-width: 90vw;
   border-radius: 5px;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
 }
 
 .scores-section {
@@ -28,6 +32,8 @@ main {
   justify-content: space-between;
   align-items: center;
 }
+
+
 .player-icon {
   height: 100px;
 }
@@ -35,6 +41,26 @@ main {
 .game-heading {
   font-family: 'Amatic SC', cursive;
   font-size: 2.5rem;
+}
+
+.game-board {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  grid-template: auto auto / repeat(3, 1fr);
+  gap: 5%;
+}
+
+.box {
+  height: 100px;
+  width: 100px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.622);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 415px){
