@@ -8,7 +8,9 @@ export type WinLog = {
   teddy: number, 
   bunny: number, 
   currentWinner: string
+  currentLoss: boolean
 }
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

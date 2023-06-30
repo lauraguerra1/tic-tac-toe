@@ -11,13 +11,7 @@ import { WinLog } from './index';
 function App() {
   const [boxes, setBoxes] = useState<Box[]>(getNewBoxes())
   const [currentPlayer, setCurrentPlayer] = useState<string>('teddy')
-  const [winnerLog, setWinnerLog] = useState<WinLog>({teddy: 0, bunny: 0, currentWinner: ''})
-  
-  // type WinLog = {
-  //   teddy: number, 
-  //   bunny: number, 
-  //   currentWinner: string
-  // }
+  const [winnerLog, setWinnerLog] = useState<WinLog>({teddy: 0, bunny: 0, currentWinner: '', currentLoss: false})
 
   type Win = [number, number, number]
 
@@ -69,11 +63,21 @@ function App() {
           return newLog
         })
         return
-      }
+      } 
     })
   }
 
-  useEffect(checkForWins, [boxes])
+  const checkForLoss = () => {
+    if (!winnerLog.currentWinner && boxes.every(box => box.filledWith)) {
+      setWinnerLog(prevLog => ({...prevLog, currentLoss: true}))
+    }
+  }
+  
+  useEffect(() => {
+    checkForWins()
+    checkForLoss()
+  }, [boxes])
+
 
   const takeTurn = (id: number) => {
     if(!winnerLog.currentWinner) {
@@ -100,17 +104,22 @@ function App() {
 
   const resetGame = () => {
     setBoxes(getNewBoxes())
-    setWinnerLog(prevLog => ({...prevLog, currentWinner: ''}))
+    setWinnerLog(prevLog => ({...prevLog, currentWinner: '', currentLoss: false}))
   }
 
   return (
     <main>
-      {winnerLog.currentWinner && <Confetti />}
+      {winnerLog.currentWinner && 
+        <Confetti
+          height={window.innerHeight}
+          width={window.innerWidth}
+        />
+      }
       <Header winnerLog={winnerLog}/>
       <div className='game-board'>
         {boxElements}
       </div>
-      {winnerLog.currentWinner ? <button className='reset' onClick={resetGame}>Play Again</button> : <div className='reset-placeholder'></div>}
+      {winnerLog.currentWinner  || winnerLog.currentLoss ? <button className='reset' onClick={resetGame}>Play Again</button> : <div className='reset-placeholder'></div>}
     </main>
   );
 }
