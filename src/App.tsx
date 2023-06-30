@@ -1,6 +1,3 @@
-
-import logo from './logo.svg';
-import './App.css';
 import Header from './Header'
 import Box from './Box'
 import { useState, useEffect } from 'react';

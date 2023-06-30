@@ -1,4 +1,3 @@
-import React from "react"
 import teddy from './teddy.png'
 import bunny from './bunny.png'
 
