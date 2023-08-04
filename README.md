@@ -2,7 +2,7 @@
 
 This application was made for the purpose of learning typescript and react, and developing those skills. This is a simple web app that allows users to play a game of tic-tac-toe! 
 
-Play a few rounds on the live application [available here](https://tictactoe-react-ts-e79988b6b6bb.herokuapp.com/)! 
+Play a few rounds on the live application [available here](https://laura-tic-tac-toe.vercel.app/)! 
 
 ## Preview Of App 
 ### Desktop: 
